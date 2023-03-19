@@ -1,1 +1,1 @@
-# ci-projects
+# ci projects
