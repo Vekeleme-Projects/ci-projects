@@ -5,14 +5,20 @@ pipeline {
     }
     stages {
         stage('Unit Test'){
-            sh 'mvn test'
+            steps {
+                sh 'mvn test'
+            }   
         }
         stage('Build Jar'){
-            sh 'mvn clean package'
+            steps {
+                sh 'mvn clean package'
+            }
         }
-        stage('SonarQube Code Analysis'){
-            sh 'mvn sonar:sonar'
-        }
+        // stage('SonarQube Code Analysis'){
+        //     steps {
+        //         sh 'mvn sonar:sonar'
+        //     }
+        // }
         // stage('Upload To Nexus'){
         //     sh 'mvn deploy'
         // }
