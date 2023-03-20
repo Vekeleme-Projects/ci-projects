@@ -13,18 +13,23 @@ pipeline {
             environment {
                 sonarScanner =  tool 'sonar-4.8.0'
             }
+
             steps {
                 sh 'mvn sonar:sonar'
             }
         }
+
         stage('Build Jar'){
             steps {
                 sh 'mvn clean package'
             }
         }
-        stage('Upload To Nexus'){
-            sh 'mvn deploy'
-        }
+
+        // stage('Upload To Nexus'){
+        //     steps {
+        //         sh 'mvn deploy'
+        //     }
+        // }
 
     }
 
