@@ -9,19 +9,22 @@ pipeline {
                 sh 'mvn test'
             }   
         }
+        stage('SonarQube Code Analysis'){
+            environment {
+                sonarScanner =  tool 'sonar-4.8.0'
+            }
+            steps {
+                sh 'mvn sonar:sonar'
+            }
+        }
         stage('Build Jar'){
             steps {
                 sh 'mvn clean package'
             }
         }
-        // stage('SonarQube Code Analysis'){
-        //     steps {
-        //         sh 'mvn sonar:sonar'
-        //     }
-        // }
-        // stage('Upload To Nexus'){
-        //     sh 'mvn deploy'
-        // }
+        stage('Upload To Nexus'){
+            sh 'mvn deploy'
+        }
 
     }
 
