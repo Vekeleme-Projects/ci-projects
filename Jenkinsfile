@@ -18,14 +18,17 @@ pipeline {
                 withSonarQubeEnv('sonar-server'){
                 sh 'mvn sonar:sonar'
                 }
+                timeout(time: 5, units: 'MINUTES'){
+                    waitForQualityGate abortPipeline: true
+                }
             }
         }
 
-        stage('Build Jar'){
-            steps {
-                sh 'mvn clean package'
-            }
-        }
+        // stage('Build Jar'){
+        //     steps {
+        //         sh 'mvn clean package'
+        //     }
+        // }
 
         // stage('Upload To Nexus'){
         //     steps {
