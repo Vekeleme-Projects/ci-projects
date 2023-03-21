@@ -74,7 +74,20 @@ pipeline {
             }
         }
 
-        stage ('deploy') {
+        stage ('deploy to dev environment') {
+            when {
+                expression {
+                    env.BRANCH_NAME == 'dev'
+                }
+            }
+            steps {
+                script {
+                    echo 'Deploying to our Server'
+                }
+            }
+        }
+
+        stage ('deploy to customer') {
             when {
                 expression {
                     env.BRANCH_NAME == 'main'
