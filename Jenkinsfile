@@ -8,8 +8,9 @@ pipeline {
 
     environment {
         DOCKER_REPO_NAME = 'vistein12'
-        DOCKER_IMAGE_NAME = "java-maven-app:${APP_VERSION}"
-
+        DOCKER_IMAGE_NAME = "java-maven-app"
+        IMAGE_TAG = APP_VERSION
+        GIT_REPO_URL = "git@github.com:Vekeleme-Projects/ci-projects.git"
     }
 
     stages {
@@ -71,28 +72,28 @@ pipeline {
             steps {
                 script{
                     echo "Building docker Image"
-                    docker build -t "${DOCKER_REPO_NAME}/${DOCKER_IMAGE_NAME}" .
+                    docker build -t "${DOCKER_REPO_NAME}/${DOCKER_IMAGE_NAME}:${IMAGE_TAG}" .
                 }
             }
         }    
 
-        stage("Push Docker image"){
+        stage("Push Docker image") {
             steps {
                 script{
                     echo "Pushing docker Image"
                     withCredentials ([usernamePassword(credentialsId: 'docker-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                         sh "echo $PASS | docker login -u $USER --password-stdin"
                     }
-                    docker push  "${DOCKER_REPO_NAME}/${DOCKER_IMAGE_NAME}"
+                    docker push  "${DOCKER_REPO_NAME}/${DOCKER_IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
-        }   
+        }
 
         stage("commit version update"){
             steps{
                 script{
                     sshagent(credentials: ['GitHub-SSH']) {
-                        sh "git remote set-url origin git@github.com:Vekeleme-Projects/ci-projects.git"
+                        sh "git remote set-url origin ${GIT_REPO_URL}"
                         sh 'git add .'
                         sh 'git commit -m "ci: version bump"'
                         sh 'git push origin HEAD:main'
