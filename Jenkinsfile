@@ -7,10 +7,9 @@ pipeline {
     }
 
     environment {
-        NEXUS_VERSION = 'nexus3'
-        NEXUS_PROTOCOL = 'http'
-        NEXUS_REPO_URL = ''
-        NEXUS_REPO_NAME = 'tesla-release'
+        DOCKER_REPO_NAME = 'vistein12'
+        DOCKER_IMAGE_NAME = "java-maven-app:${APP_VERSION}"
+
     }
 
     stages {
@@ -68,29 +67,26 @@ pipeline {
             }
         }
 
-        stage ('Upload to Nexus') {
+        stage("Build Docker image"){
             steps {
-                script {
-                    echo 'Uploading to Nexus Artifactory'
-                    def mavenPom = readMavenPom 'pom.xml'
-
-                    nexusArtifactUploader artifacts: [
-                        [artifactId: 'pom.aritfactId',
-                         classifier: '',
-                         file: "target/${pom.artifactId}-${APP_VERSION}",
-                         type: 'pom.packaging']
-                         ],
-                         credentialsId: 'git-credentials', 
-                         groupId: 'pom.groupId',
-                         nexusUrl: NEXUS_REPO_URL,
-                         nexusVersion: NEXUS_VERSION,
-                         protocol: NEXUS_PROTOCOL,
-                         repository: NEXUS_REPO_NAME,
-                         version: APP_VERSION
-
+                script{
+                    echo "Building docker Image"
+                    docker build -t "${DOCKER_REPO_NAME}/${DOCKER_IMAGE_NAME}" .
                 }
             }
-        }        
+        }    
+
+        stage("Push Docker image"){
+            steps {
+                script{
+                    echo "Pushing docker Image"
+                    withCredentials ([usernamePassword(credentialsId: 'docker-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                        sh "echo $PASS | docker login -u $USER --password-stdin"
+                    }
+                    docker push  "${DOCKER_REPO_NAME}/${DOCKER_IMAGE_NAME}"
+                }
+            }
+        }   
 
         stage("commit version update"){
             steps{
@@ -107,7 +103,5 @@ pipeline {
         }       
 
     }
-
-
-
+    
 }
