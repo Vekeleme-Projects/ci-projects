@@ -45,7 +45,7 @@ pipeline {
             steps {
                 script {
                     echo 'Uploading to Nexus Artifactory'
-                    def pom = readMavenPom 'pom.xml'
+                    def mavenPom = readMavenPom 'pom.xml'
 
                     nexusArtifactUploader artifacts: [
                         [artifactId: 'pom.aritfactId',
