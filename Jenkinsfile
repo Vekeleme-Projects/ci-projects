@@ -17,10 +17,9 @@ pipeline {
             steps {
                 sh 'mvn clean package'
                 }
-            }
         }
 
-        stage('CODE ANALYSIS') {
+        stage ('CODE ANALYSIS') {
             environment {
                 sonarScanner = tool 'sonar-4.8.0'
             }
@@ -28,4 +27,6 @@ pipeline {
                 sh 'mvn sonar:sonar'
                 }
             }
+        }   
+
 }
