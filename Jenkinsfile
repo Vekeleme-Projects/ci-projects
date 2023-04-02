@@ -19,4 +19,13 @@ pipeline {
                 }
             }
         }
+
+        stage('CODE ANALYSIS') {
+            environment {
+                sonarScanner = tool 'sonar-4.8.0'
+            }
+            steps {
+                sh 'mvn sonar:sonar'
+                }
+            }
 }
