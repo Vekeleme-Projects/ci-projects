@@ -51,7 +51,7 @@ pipeline {
                     nexusArtifactUploader artifacts: [
                         [artifactId: 'pom.aritfactId',
                          classifier: '',
-                         file: "target/*.war",
+                         file: "target/${pom.aritfactId}-${pom.version}.war",
                          type: 'pom.packaging']
                          ],
                          credentialsId: 'git-credentials', 
