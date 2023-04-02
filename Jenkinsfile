@@ -25,9 +25,12 @@ pipeline {
             }
             steps {
                 script {
-                withSonarQubeEnv(credentialsId: 'sonar-token') {
-                    sh 'mvn sonar:sonar'
-                }
+                    withSonarQubeEnv(credentialsId: 'sonar-token') {
+                        sh 'mvn sonar:sonar'
+                    }
+                    timeout(time: 5, unit: 'MINUTES') {
+                        waitForQualityGate abortPipeline: true
+                    }
                 }
             }
         }
