@@ -10,6 +10,7 @@ pipeline {
         NEXUS_VERSION = 'nexus3'
         NEXUS_REPO_NAME = 'vprofile-releases/'
         NEXUS_GRP_REPO = 'vprofile-group'
+        NEXUS_CREDENTIAL_ID = 'nexus-credentials'
     }
 
     stages {
@@ -54,7 +55,7 @@ pipeline {
                          file: "target/${pom.artifactId}-${pom.version}.war",
                          type: 'pom.packaging']
                          ],
-                         credentialsId: 'git-credentials', 
+                         credentialsId: NEXUS_CREDENTIAL_ID, 
                          groupId: 'pom.groupId',
                          nexusUrl: NEXUS_REPO_URL,
                          nexusVersion: NEXUS_VERSION,
