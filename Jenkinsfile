@@ -5,10 +5,11 @@ pipeline {
         maven 'maven-3.9.1'
     }
     environment {
-        NEXUS_REPO_URL = 'http://3.16.215.200:8081'
+        NEXUS_REPO_URL = '3.16.215.200:8081'
         NEXUS_PROTOCOL = 'http'
-        NEXUS_VERSION = 'Nexus 3'
-        NEXUS_REPO_NAME = 'vprofile-releases'
+        NEXUS_VERSION = 'nexus3'
+        NEXUS_REPO_NAME = 'vprofile-releases/'
+        NEXUS_GRP_REPO = 'vprofile-group'
     }
 
     stages {
@@ -45,7 +46,7 @@ pipeline {
             steps {
                 script {
                     echo 'Uploading to Nexus Artifactory'
-                    def mavenPom = readMavenPom 'pom.xml'
+                    pom = readMavenPom 'pom.xml'
 
                     nexusArtifactUploader artifacts: [
                         [artifactId: 'pom.aritfactId',
