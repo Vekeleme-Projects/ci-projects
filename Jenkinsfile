@@ -24,11 +24,14 @@ pipeline {
                 sonarScanner = tool 'sonar-4.8.0'
             }
             steps {
-                    withSonarQubeEnv(credentialsId: 'sonar-token') {
-                        sh 'mvn sonar:sonar'
-                    }
+                script {
+                withSonarQubeEnv(credentialsId: 'sonar-token') {
+                    sh 'mvn sonar:sonar'
+                }
                 }
             }
-        }   
+        }
+        
+    }   
 
 }
