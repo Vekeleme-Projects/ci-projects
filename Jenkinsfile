@@ -7,10 +7,16 @@ pipeline {
 
     stages {
         stage('UNIT TEST') {
-        steps {
-        
-            sh 'mvn test'
+            steps {
+            
+                sh 'mvn test'
+                }
+            }
+
+        stage('BUILD JAR') {
+            steps {
+                sh 'mvn clean package'
+                }
             }
         }
-    }
 }
