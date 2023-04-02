@@ -49,9 +49,9 @@ pipeline {
                     pom = readMavenPom file: "pom.xml";
 
                     nexusArtifactUploader artifacts: [
-                        [artifactId: 'pom.aritfactId',
+                        [artifactId: 'pom.artifactId',
                          classifier: '',
-                         file: "target/${pom.aritfactId}-${pom.version}.war",
+                         file: "target/${pom.artifactId}-${pom.version}.war",
                          type: 'pom.packaging']
                          ],
                          credentialsId: 'git-credentials', 
